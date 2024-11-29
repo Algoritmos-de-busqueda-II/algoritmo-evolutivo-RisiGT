@@ -18,6 +18,10 @@ public class Solucion {
                 " - Genotipo = " + Arrays.toString(valores);
     }
 
+    public int size() {
+        return valores.length;
+    }
+
     public int get(int i) {
         return valores[i];
     }

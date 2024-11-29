@@ -1,51 +1,42 @@
+import java.util.List;
+
 public class Population  {
-    private List<Solucion> population;
+    private List<Solucion> solutions;
     private Solucion best;
     private Solucion worst;
 
     public Population(List<Solucion> population) {
-        this.population = population;
+        this.solutions = population;
         this.best = null;
         this.worst = null;
     }
 
     public Population(Population p) {
-        this.population = p.getPopulation();
+        this.solutions = p.getSolutions();
         this.best = null;
         this.worst = null;
     }
 
-    public void evaluate() {
-        int bestScore = Integer.MIN_VALUE;
-        int worstScore = Integer.MAX_VALUE;
-        for (Solucion s : population) {
-            int fitness = instance.evaluar(s);
-            if (fitness > bestScore) {
-                best = s;
-                bestScore = fitness;
-            }
-            if (fitness < worstScore) {
-                worst = s;
-                worstScore = fitness;
-            }
-            s.setFitness(fitness);
-        }
+    public int size() {
+        return solutions.size();
     }
 
-    public List<Solucion> getPopulation() {
-        return population;
+    public List<Solucion> getSolutions() {
+        return solutions;
     }
 
     public Solucion getBest() {
+        if (best == null) ObjectiveFunction.evaluate(this);
         return best;
     }
 
     public Solucion getWorst() {
+        if (worst == null) ObjectiveFunction.evaluate(this);
         return worst;
     }
 
-    public void setPopulation(List<Solucion> population) {
-        this.population = population;
+    public void setSolutions(List<Solucion> population) {
+        this.solutions = population;
     }
 
     public void setBest(Solucion best) {
@@ -57,10 +48,10 @@ public class Population  {
     }
 
     public void add(Solucion s) {
-        population.add(s);
+        solutions.add(s);
     }
 
     public void remove(Solucion s) {
-        population.remove(s);
+        solutions.remove(s);
     }
 }

@@ -3,49 +3,60 @@ import java.util.List;
 
 public class AlgoritmoEvolutivo {
 
-    final Instancia instancia;
-    final int tamanioPoblacion;
+    final Instancia instance;
+    final int populationSize;
     final boolean debug;
 
-    public AlgoritmoEvolutivo(Instancia instancia, int tamanioPoblacion, boolean debug) {
-        this.instancia = instancia;
-        this.tamanioPoblacion = tamanioPoblacion;
+    public AlgoritmoEvolutivo(Instancia instance, int populationSize, boolean debug) {
+        this.instance = instance;
+        this.populationSize = populationSize;
         this.debug = debug;
     }
 
 
     public Solucion run() {
         Population population = new Population(generarPoblacionInicial());
-        population.evaluate();
-        imprimePoblacion("Población inicial:",poblacion,debug);
+        ObjectiveFunction.evaluate(population);
+        imprimePoblacion("Población inicial:",population,debug);
 
         int maxGenerations = 100;
-        Population newPopulation;
+        Population parents;
         Population offspring;
-        Solucion best;
-        double probCross = 0.6 + Math.random() * 0.3;
-        double probMut = Math.random() * 0.15;
+        double crossRate = 0.6 + Math.random() * 0.3;
+        double mutRate = Math.random() * 0.15;
         
         for (int i = 0; i < maxGenerations; i++) {
-            newPopulation = selectByQuality(population);
-            offspring = cross(poblacion, probCross);
-            offspring = mutate(offspring, probMut);
+            parents = selection(population, crossRate);
+            offspring = crossover(parents);
+            offspring = mutation(offspring, mutRate);
 
-            best = instancia.getBetter(population.getBest(), offspring.getBest());
-            offspring.remove(offspring.getWorst());
-            offspring.add(best);
-            population = new Population(offspring);
+            population = replacement(population, offspring);
 
-            imprimePoblacion("Población en la iteración " + i + ":",poblacion,debug);
+            imprimePoblacion("Población en la iteración " + i + ":",population,debug);
         }
 
-        return best;
+        return population.getBest();
     }
 
-    private void imprimePoblacion(String msg, List<Solucion> poblacion, boolean debug) {
+    public Population replacement(Population population, Population offspring) {
+        Solucion best = ObjectiveFunction.getBetter(population.getBest(), offspring.getBest());
+
+        offspring.remove(offspring.getWorst());
+        offspring.add(best);
+
+        population = new Population(offspring);
+
+        if (population.size() > populationSize) {
+            population.remove(population.getWorst());
+        }
+
+        return population;
+    }
+
+    private void imprimePoblacion(String msg, Population poblacion, boolean debug) {
         if (debug) {
             System.out.println(msg);
-            for (Solucion s : poblacion) {
+            for (Solucion s : poblacion.getSolutions()) {
                 System.out.println(s);
             }
         }
@@ -53,8 +64,8 @@ public class AlgoritmoEvolutivo {
 
     private List<Solucion> generarPoblacionInicial() {
         List<Solucion> poblacion = new ArrayList<>();
-        for (int i = 0; i < tamanioPoblacion; i++) {
-            poblacion.add(instancia.generarSolucionAleatoria());
+        for (int i = 0; i < populationSize; i++) {
+            poblacion.add(instance.generarSolucionAleatoria());
         }
         return poblacion;
     }
