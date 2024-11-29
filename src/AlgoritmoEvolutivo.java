@@ -15,11 +15,29 @@ public class AlgoritmoEvolutivo {
 
 
     public Solucion run() {
-        List<Solucion> poblacion = generarPoblacionInicial();
-        Solucion best = evaluarPoblacion(poblacion);
+        Population population = new Population(generarPoblacionInicial());
+        population.evaluate();
         imprimePoblacion("Población inicial:",poblacion,debug);
 
-        // TODO: completar algoritmo
+        int maxGenerations = 100;
+        Population newPopulation;
+        Population offspring;
+        Solucion best;
+        double probCross = 0.6 + Math.random() * 0.3;
+        double probMut = Math.random() * 0.15;
+        
+        for (int i = 0; i < maxGenerations; i++) {
+            newPopulation = selectByQuality(population);
+            offspring = cross(poblacion, probCross);
+            offspring = mutate(offspring, probMut);
+
+            best = instancia.getBetter(population.getBest(), offspring.getBest());
+            offspring.remove(offspring.getWorst());
+            offspring.add(best);
+            population = new Population(offspring);
+
+            imprimePoblacion("Población en la iteración " + i + ":",poblacion,debug);
+        }
 
         return best;
     }
@@ -31,20 +49,6 @@ public class AlgoritmoEvolutivo {
                 System.out.println(s);
             }
         }
-    }
-
-    private Solucion evaluarPoblacion(List<Solucion> poblacion) {
-        Solucion best = null;
-        int bestScore = Integer.MIN_VALUE;
-        for (Solucion s : poblacion) {
-            int fitness = instancia.evaluar(s);
-            if (fitness > bestScore) {
-                best = s;
-                bestScore = fitness;
-            }
-            s.setFitness(fitness);
-        }
-        return best;
     }
 
     private List<Solucion> generarPoblacionInicial() {

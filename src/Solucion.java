@@ -22,6 +22,10 @@ public class Solucion {
         return valores[i];
     }
 
+    public int getFitness() {
+        return fitness;
+    }
+    
     public void setFitness(int valorFitness) {
         fitness = valorFitness;
     }

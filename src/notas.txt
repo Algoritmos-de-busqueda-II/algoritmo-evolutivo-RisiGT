@@ -1,0 +1,55 @@
+    // Seleccion por ruleta
+    // Cruce 1 punto
+    // Mutación bitflip
+    // Reemplazo generacional con elitismo
+    // Problema: Max 1s en la solución
+
+    public Population selectByQuality(Population population) {
+        List<Solucion> selected = new ArrayList<>();
+        for (int i = 0; i < tamanioPoblacion; i++) {
+            Solucion s1 = population.getPopulation().get((int) (Math.random() * tamanioPoblacion));
+            Solucion s2 = population.getPopulation().get((int) (Math.random() * tamanioPoblacion));
+            Solucion best = instancia.getBetter(s1, s2);
+            selected.add(best);
+        }
+        return new Population(selected);
+    }
+
+// A lo mejor me sirve del ACO
+
+    public double[] calculateProbabilities(double[][] tau, double alpha, double beta) {
+        int n = visitedCities.length;
+        double[][] eta = instance.getVisibilityMatrix();
+        double[] probabilities = new double[n];
+        double sum = 0;
+        int i = tour[currentIndex];
+
+        for (int j = 0; j < n; j ++) {
+            if (visitedCities[j]) {
+                probabilities[j] = 0;
+                continue;
+            }
+
+            probabilities[j] = Math.pow(tau[i][j], alpha) * Math.pow(eta[i][j], beta);
+            sum += probabilities[j];
+        }
+
+        for (int j = 0; j < n; j++) {
+            probabilities[j] /= sum;
+        }
+
+        return probabilities;
+    }
+
+    public int spinRouletteWheel(double[] probabilities) {
+        Random random = new Random();
+        double rand = random.nextDouble();
+        double cumulativeProbability = 0.0;
+        for (int j = 0; j < probabilities.length; j++) {
+            cumulativeProbability += probabilities[j];
+            if (rand <= cumulativeProbability) 
+                return j;
+        }
+
+        return -1;  // no debería suceder
+    }

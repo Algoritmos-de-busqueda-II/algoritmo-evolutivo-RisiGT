@@ -16,10 +16,26 @@ public class Instancia {
     }
 
     public int evaluar(Solucion s) {
+        if (s.getFitness() != 0)
+            return s.getFitness();
+
         int fitness = 0;
-        for (int i=0; i<n; i++) {
+        for (int i=0; i<n; i++)
             fitness += s.get(i);
-        }
+
+        s.setFitness(fitness);
+
         return fitness;
+    }
+
+    public boolean isBetter(Solucion s1, Solucion s2) {
+        return evaluar(s1) > evaluar(s2);
+    }
+
+    public Solucion getBetter(Solucion s1, Solucion s2) {
+        if (isBetter(s1, s2))
+            return s1;
+        else
+            return s2;
     }
 }
