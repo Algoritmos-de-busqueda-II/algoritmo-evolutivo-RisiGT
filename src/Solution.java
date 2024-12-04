@@ -1,10 +1,10 @@
 import java.util.Arrays;
 
-public class Solucion {
+public class Solution {
     private int[] valores;
     private int fitness;
 
-    public Solucion(int n) {
+    public Solution(int n) {
         this.valores = new int[n];
     }
 
@@ -29,7 +29,11 @@ public class Solucion {
     public int getFitness() {
         return fitness;
     }
-    
+
+    public void set(int i, int valor) {
+        valores[i] = valor;
+    }
+
     public void setFitness(int valorFitness) {
         fitness = valorFitness;
     }

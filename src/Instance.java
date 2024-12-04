@@ -1,12 +1,12 @@
-public class Instancia {
+public class Instance {
     int n;
 
-    public Instancia(int n) {
+    public Instance(int n) {
         this.n = n;
     }
 
-    public Solucion generarSolucionAleatoria() {
-        Solucion s = new Solucion(n);
+    public Solution generarSolucionAleatoria() {
+        Solution s = new Solution(n);
         for (int i=0; i<n; i++) {
             // Valor aleatorio 0 o 1
             int valor = (int) (Math.random() * 2);

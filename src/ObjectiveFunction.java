@@ -1,6 +1,6 @@
 public class ObjectiveFunction {
 
-    public static int evaluate(Solucion s) {
+    public static int evaluate(Solution s) {
         int n = s.size();
 
         if (s.getFitness() != 0)
@@ -16,11 +16,11 @@ public class ObjectiveFunction {
     }
 
     public static void evaluate(Population population) {
-        Solucion best = null;
-        Solucion worst = null;
+        Solution best = null;
+        Solution worst = null;
         int bestScore = Integer.MIN_VALUE;
         int worstScore = Integer.MAX_VALUE;
-        for (Solucion s : population.getSolutions()) {
+        for (Solution s : population.getSolutions()) {
             int fitness = evaluate(s);
             if (fitness > bestScore) {
                 best = s;
@@ -36,11 +36,11 @@ public class ObjectiveFunction {
         population.setWorst(worst);
     }
 
-    public static boolean isBetter(Solucion s1, Solucion s2) {
+    public static boolean isBetter(Solution s1, Solution s2) {
         return evaluate(s1) > evaluate(s2);
     }
 
-    public static  Solucion getBetter(Solucion s1, Solucion s2) {
+    public static  Solution getBetter(Solution s1, Solution s2) {
         if (isBetter(s1, s2))
             return s1;
         else
