@@ -1,2 +1,3 @@
 Se puede hacer do while en java
 pause en modo debug (ns si vscode lo tiene)
+jMetal (ejemplo de código para ver)

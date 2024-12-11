@@ -1,11 +1,10 @@
 public class ObjectiveFunction {
 
     public static int evaluate(Solution s) {
+        // if (s.getFitness() != 0)
+        //     return s.getFitness();
+            
         int n = s.size();
-
-        if (s.getFitness() != 0)
-            return s.getFitness();
-
         int fitness = 0;
         for (int i = 0; i < n; i++)
             fitness += s.get(i);
