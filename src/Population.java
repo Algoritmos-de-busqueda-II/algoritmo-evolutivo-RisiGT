@@ -81,12 +81,14 @@ public class Population  {
     }
 
     public Solution getBest() {
-        if (best == null) ObjectiveFunction.evaluate(this);
+        // if (best == null) // No tengo claro cuando se setea el mejor porque con esta línea a veces empeora el resultado de la solución
+            ObjectiveFunction.evaluate(this);
         return best;
     }
 
     public Solution getWorst() {
-        if (worst == null) ObjectiveFunction.evaluate(this);
+        // if (worst == null)
+            ObjectiveFunction.evaluate(this);
         return worst;
     }
 

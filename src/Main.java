@@ -1,7 +1,7 @@
 public class Main {
 
     public static void main(String[] args) {
-        int n = 30;
+        int n = 40;  // Tamaño del array
         Instance instance = new Instance(n);
 
         // Parámetros del algoritmo
